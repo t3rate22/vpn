@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZHStore VPN Configurator</title>
+    <title>Ryu_co Configurator</title>
     <link rel="icon" href="https://zhwifi.web.id/favicon.ico">
     
     <script>
-        // Suntik CSS dengan cache busting
         const cssVersion = new Date().getTime();
         document.write(`<link rel="stylesheet" href="style.css?v=${cssVersion}">`);
     </script>
@@ -15,18 +14,12 @@
 <body>
     <div class="container">
         <header>
-            <a href="https://zhwifi.web.id" class="logo">
-                <img src="https://zhwifi.web.id/favicon.ico" width="10%">
-                <h1>ZHStore Configurator</h1>
+            <a href="#" class="logo">
+                <h1>Ryu_co Configurator</h1>
             </a>
         </header>
 
         <main>
-            <div class="search-container" id="search-container">
-                <input type="text" id="search-input" placeholder="Cari provider atau negara...">
-                <button id="close-search-btn" title="Tutup Pencarian">&times;</button>
-            </div>
-
             <div class="info-grid">
                 <div class="info-card">
                     <span class="icon">倹</span>
@@ -36,28 +29,31 @@
                     </div>
                 </div>
                 <div class="info-card">
-                    <span class="icon">桃</span>
                     <div>
                         <p>Your Location</p>
                         <h4 id="location-info">Detecting...</h4>
                     </div>
                 </div>
                 <div class="info-card" id="worker-info">
-                  <span class="icon">噫</span>
                   <div>
                       <p>Active Worker Host</p>
                       <h4>Loading...</h4>
                   </div>
                 </div>
                 <div class="info-card">
-                    <span class="icon">訣</span>
                     <select id="country-filter">
                         <option value="all">All Countries</option>
                     </select>
                 </div>
+                <div class="info-card search-card">
+                    <input type="text" id="search-input" placeholder="Cari provider atau negara...">
+                </div>
             </div>
 
             <div class="server-list-container" id="server-list">
+                </div>
+
+            <div class="pagination-container" id="pagination-container">
                 </div>
         </main>
     </div>
@@ -101,13 +97,12 @@
         <div class="fab-options">
             <div class="fab-option">
                 <span class="fab-label">Export</span>
-                <button class="fab-action-btn" id="export-btn"></button> </div>
+                <button class="fab-action-btn" id="export-btn"></button>
+            </div>
             <div class="fab-option">
                 <span class="fab-label">Settings</span>
-                <button class="fab-action-btn" id="settings-btn"></button> </div>
-            <div class="fab-option">
-                <span class="fab-label">Search</span>
-                <button class="fab-action-btn" id="search-btn">剥</button> </div>
+                <button class="fab-action-btn" id="settings-btn"></button>
+            </div>
         </div>
         <button class="fab-main-btn" id="fab-main-btn">
             <span class="fab-main-icon">+</span>
@@ -116,7 +111,6 @@
     </div>
 
     <script>
-        // Suntik JavaScript dengan cache busting
         const jsVersion = new Date().getTime();
         document.write(`<script src="script.js?v=${jsVersion}" defer><\/script>`);
     </script>
