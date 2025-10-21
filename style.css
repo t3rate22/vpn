@@ -1,11 +1,11 @@
 /* --- Definisi Warna & Font --- */
 :root {
-    --bg-dark: #282e2e;
-    --primary-green: #7ecca0;
+    --bg-dark: #1e1e1e; /* Sedikit lebih gelap */
+    --primary-accent: #e0e0e0; /* Menggantikan hijau */
     --text-light: #f0f0f0;
     --text-dark: #1a1a1a;
-    --surface-light: #3a4141;
-    --border-color: #4a5252;
+    --surface-light: #2c2c2c; /* Sedikit lebih gelap */
+    --border-color: #404040; /* Sedikit lebih gelap */
     --danger-color: #ff8a80;
 
     --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -31,6 +31,7 @@ body {
     max-width: 900px;
     margin: 0 auto;
     padding: 15px;
+    padding-bottom: 120px; /* Beri ruang agar konten tidak tertutup FAB */
 }
 
 header {
@@ -49,14 +50,51 @@ header {
     text-decoration: none;
     color: var(--text-light);
 }
-.logo svg {
-    width: 40px;
-    height: 40px;
-}
 .logo h1 {
     font-size: 1.5em;
     font-weight: 600;
 }
+
+/* --- Search Container Atas (BARU) --- */
+.search-container {
+    background-color: var(--bg-dark);
+    padding: 15px;
+    margin: 0 -15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    transform: translateY(-150%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-bottom: 1px solid var(--border-color);
+}
+.search-container.visible {
+    transform: translateY(0);
+}
+.search-container input {
+    flex-grow: 1;
+    background-color: var(--surface-light);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    color: var(--text-light);
+    font-size: 1em;
+}
+#close-search-btn {
+    background: var(--surface-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.5em;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    padding: 0;
+}
+
 
 /* --- Kartu Informasi Atas --- */
 .info-grid {
@@ -96,7 +134,7 @@ header {
 
 /* --- Daftar Server --- */
 .server-list-container {
-    /* Placeholder untuk daftar server */
+    /* Placeholder */
 }
 .server-group-title {
     text-transform: uppercase;
@@ -105,7 +143,6 @@ header {
     margin: 30px 0 10px 0;
     font-size: 0.9em;
 }
-/* Placeholder style, akan diisi oleh JS */
 .server-card {
     background-color: var(--surface-light);
     border-radius: 12px;
@@ -123,8 +160,8 @@ header {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 .server-card.selected {
-    border-left-color: var(--primary-green);
-    background-color: #434c4c;
+    border-left-color: var(--primary-accent); /* Diubah dari hijau */
+    background-color: #383838;
 }
 .server-details .provider {
     font-weight: 600;
@@ -135,54 +172,15 @@ header {
     color: #ccc;
 }
 .ping-badge {
-    background-color: var(--primary-green);
-    color: var(--text-dark);
+    background-color: var(--border-color); /* Diubah dari hijau */
+    color: var(--text-light); /* Diubah dari gelap */
     font-weight: bold;
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.9em;
 }
 
-/* --- Footer & Kontrol --- */
-.controls-footer {
-    position: sticky;
-    bottom: 0;
-    background-color: rgba(40, 46, 46, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 15px;
-    border-top: 1px solid var(--border-color);
-    margin: 20px -15px -15px -15px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    align-items: center;
-}
-.search-box {
-    position: relative;
-}
-.search-box input {
-    width: 100%;
-    background-color: var(--bg-dark);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 12px 12px 12px 40px;
-    color: var(--text-light);
-    font-size: 1em;
-}
-.search-box .icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #aaa;
-}
-
-.control-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
-}
+/* --- Kontrol Tombol Umum --- */
 .btn {
     background-color: var(--surface-light);
     color: var(--text-light);
@@ -196,18 +194,115 @@ header {
     text-align: center;
 }
 .btn.primary {
-    background-color: var(--primary-green);
+    background-color: var(--primary-accent); /* Diubah dari hijau */
     color: var(--text-dark);
-    border-color: var(--primary-green);
+    border-color: var(--primary-accent);
     font-weight: bold;
 }
 .btn:hover {
     background-color: var(--border-color);
 }
 .btn.primary:hover {
-    background-color: #69b88f;
+    background-color: #f0f0f0;
 }
-/* --- Gaya Baru untuk Modal Settings --- */
+
+/* --- FAB (Floating Action Button) - BARU --- */
+.fab-container {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1500;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+.fab-main-btn {
+    background-color: var(--surface-light);
+    color: var(--text-light);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+.fab-main-btn:hover {
+    background-color: var(--border-color);
+}
+.fab-main-icon {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.fab-count-badge {
+    position: absolute;
+    top: -2px;
+    right: -5px;
+    background-color: var(--primary-accent);
+    color: var(--text-dark);
+    font-size: 0.5em;
+    font-weight: bold;
+    padding: 4px 7px;
+    border-radius: 12px;
+    border: 1px solid var(--bg-dark);
+}
+.fab-options {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+}
+.fab-container.active .fab-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.fab-container.active .fab-main-btn .fab-main-icon {
+    transform: rotate(45deg);
+}
+.fab-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.fab-label {
+    background-color: var(--surface-light);
+    color: var(--text-light);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.fab-action-btn {
+    background-color: var(--surface-light);
+    color: var(--primary-accent);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    transition: background-color 0.2s ease;
+}
+.fab-action-btn:hover {
+    background-color: var(--border-color);
+}
+
+
+/* --- Gaya Modal Settings --- */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -219,17 +314,14 @@ header {
     justify-content: center;
     align-items: center;
     z-index: 2000;
-    /* Mulai dengan tersembunyi */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-
 .modal-overlay.visible {
     opacity: 1;
     visibility: visible;
 }
-
 .modal-content {
     background-color: var(--bg-dark);
     padding: 25px;
@@ -239,18 +331,15 @@ header {
     border: 1px solid var(--border-color);
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
-
 .form-group {
     margin-bottom: 15px;
 }
-
 .form-group label {
     display: block;
     margin-bottom: 5px;
     color: #ccc;
     font-size: 0.9em;
 }
-
 .form-group input,
 .form-group select {
     width: 100%;
@@ -261,14 +350,16 @@ header {
     color: var(--text-light);
     border-radius: 6px;
 }
-/* --- Gaya untuk Toast Notification --- */
+
+/* --- Gaya Toast Notification --- */
 .toast-notification {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--primary-green);
-    color: var(--text-dark);
+    background-color: var(--surface-light); /* Diubah */
+    color: var(--text-light); /* Diubah */
+    border: 1px solid var(--border-color);
     padding: 12px 25px;
     border-radius: 25px;
     font-weight: 500;
@@ -277,12 +368,11 @@ header {
     transition: opacity 0.3s ease, bottom 0.3s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-
 .toast-notification.visible {
-    bottom: 90px;
+    bottom: 40px;
     opacity: 1;
 }
-
 .toast-notification.error {
     background-color: var(--danger-color);
+    color: var(--text-dark);
 }
