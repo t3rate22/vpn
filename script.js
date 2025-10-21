@@ -1,12 +1,12 @@
 // ==========================================================
-// script.js (v10.1 - Compact Pagination)
+// script.js (v10.2 - Filter Persistence)
 // Ryu_co Configurator
 // ==========================================================
 
 document.addEventListener('DOMContentLoaded', function() {
     // --- PENGATURAN ---
     const PROXY_LIST_URL = 'https://raw.githubusercontent.com/FoolVPN-ID/Nautica/main/proxyList.txt';
-    const SERVERS_PER_PAGE = 10; // Diubah dari 15 menjadi 10
+    const SERVERS_PER_PAGE = 10;
 
     // --- Referensi Elemen DOM ---
     const serverListContainer = document.getElementById('server-list');
@@ -71,8 +71,14 @@ document.addEventListener('DOMContentLoaded', function() {
             allServers = parseProxyList(textData);
             filteredServers = [...allServers];
             populateCountryFilter(allServers);
+
+            // BARU: Ambil dan terapkan filter negara yang tersimpan
+            const savedCountry = localStorage.getItem('selectedCountry');
+            if (savedCountry) {
+                countryFilter.value = savedCountry;
+            }
             
-            displayCurrentPage();
+            applyAllFilters(); // Panggil applyAllFilters di sini agar filter langsung diterapkan
 
         } catch (error) {
             console.error("Initialization Error:", error);
@@ -91,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         renderServers(pageServers);
         renderPaginationControls();
-        pingVisibleServers(pageServers); // Ping hanya server yang tampil di halaman ini
+        pingVisibleServers(pageServers);
     }
 
     function parseProxyList(text) {
@@ -162,11 +168,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderPaginationControls() {
         paginationContainer.innerHTML = '';
         const totalPages = Math.ceil(filteredServers.length / SERVERS_PER_PAGE);
-        const maxPagesToShow = 5; // Jumlah tombol halaman yang ingin ditampilkan
+        const maxPagesToShow = 5;
 
         if (totalPages <= 1) return;
 
-        // Tombol "Sebelumnya"
         const prevButton = document.createElement('button');
         prevButton.className = 'page-btn';
         prevButton.textContent = '<';
@@ -179,7 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         paginationContainer.appendChild(prevButton);
 
-        // Logika untuk menentukan rentang halaman yang akan ditampilkan
         let startPage, endPage;
         if (totalPages <= maxPagesToShow) {
             startPage = 1;
@@ -199,7 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Buat tombol halaman
         for (let i = startPage; i <= endPage; i++) {
             const pageButton = document.createElement('button');
             pageButton.className = 'page-btn';
@@ -214,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
             paginationContainer.appendChild(pageButton);
         }
 
-        // Tombol "Selanjutnya"
         const nextButton = document.createElement('button');
         nextButton.className = 'page-btn';
         nextButton.textContent = '>';
@@ -410,7 +412,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // EVENT LISTENERS
     // =======================================================
     
-    countryFilter.addEventListener('change', applyAllFilters);
+    countryFilter.addEventListener('change', () => {
+        // BARU: Simpan pilihan negara setiap kali diubah
+        localStorage.setItem('selectedCountry', countryFilter.value);
+        applyAllFilters();
+    });
     searchInput.addEventListener('input', applyAllFilters);
 
     fabMainBtn.addEventListener('click', () => {
