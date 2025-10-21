@@ -1,11 +1,11 @@
 /* --- Definisi Warna & Font --- */
 :root {
-    --bg-dark: #1e1e1e; /* Sedikit lebih gelap */
-    --primary-accent: #e0e0e0; /* Menggantikan hijau */
+    --bg-dark: #1e1e1e;
+    --primary-accent: #e0e0e0;
     --text-light: #f0f0f0;
     --text-dark: #1a1a1a;
-    --surface-light: #2c2c2c; /* Sedikit lebih gelap */
-    --border-color: #404040; /* Sedikit lebih gelap */
+    --surface-light: #2c2c2c;
+    --border-color: #404040;
     --danger-color: #ff8a80;
 
     --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -31,7 +31,7 @@ body {
     max-width: 900px;
     margin: 0 auto;
     padding: 15px;
-    padding-bottom: 120px; /* Beri ruang agar konten tidak tertutup FAB */
+    padding-bottom: 120px;
 }
 
 header {
@@ -55,47 +55,6 @@ header {
     font-weight: 600;
 }
 
-/* --- Search Container Atas (BARU) --- */
-.search-container {
-    background-color: var(--bg-dark);
-    padding: 15px;
-    margin: 0 -15px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    display: flex;
-    gap: 10px;
-    transform: translateY(-150%);
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    border-bottom: 1px solid var(--border-color);
-}
-.search-container.visible {
-    transform: translateY(0);
-}
-.search-container input {
-    flex-grow: 1;
-    background-color: var(--surface-light);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 12px;
-    color: var(--text-light);
-    font-size: 1em;
-}
-#close-search-btn {
-    background: var(--surface-light);
-    border: 1px solid var(--border-color);
-    color: var(--text-light);
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.5em;
-    width: 45px;
-    height: 45px;
-    line-height: 45px;
-    text-align: center;
-    padding: 0;
-}
-
-
 /* --- Kartu Informasi Atas --- */
 .info-grid {
     display: grid;
@@ -110,6 +69,18 @@ header {
     display: flex;
     align-items: center;
     gap: 15px;
+}
+.info-card.search-card {
+    padding: 8px 15px;
+    grid-column: 1 / -1;
+}
+.info-card input[type="text"] {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    font-size: 1em;
+    outline: none;
 }
 .info-card .icon {
     font-size: 1.8em;
@@ -160,7 +131,7 @@ header {
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 .server-card.selected {
-    border-left-color: var(--primary-accent); /* Diubah dari hijau */
+    border-left-color: var(--primary-accent);
     background-color: #383838;
 }
 .server-details .provider {
@@ -172,12 +143,47 @@ header {
     color: #ccc;
 }
 .ping-badge {
-    background-color: var(--border-color); /* Diubah dari hijau */
-    color: var(--text-light); /* Diubah dari gelap */
+    background-color: var(--border-color);
+    color: var(--text-light);
     font-weight: bold;
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.9em;
+}
+
+/* --- Navigasi Halaman --- */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+.page-btn {
+    background-color: var(--surface-light);
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    min-width: 40px;
+    height: 40px;
+    padding: 5px 10px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.page-btn:hover {
+    background-color: var(--border-color);
+}
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.page-btn.active {
+    background-color: var(--primary-accent);
+    color: var(--text-dark);
+    border-color: var(--primary-accent);
+    font-weight: bold;
 }
 
 /* --- Kontrol Tombol Umum --- */
@@ -194,7 +200,7 @@ header {
     text-align: center;
 }
 .btn.primary {
-    background-color: var(--primary-accent); /* Diubah dari hijau */
+    background-color: var(--primary-accent);
     color: var(--text-dark);
     border-color: var(--primary-accent);
     font-weight: bold;
@@ -206,7 +212,7 @@ header {
     background-color: #f0f0f0;
 }
 
-/* --- FAB (Floating Action Button) - BARU --- */
+/* --- FAB (Floating Action Button) --- */
 .fab-container {
     position: fixed;
     bottom: 25px;
@@ -357,8 +363,8 @@ header {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--surface-light); /* Diubah */
-    color: var(--text-light); /* Diubah */
+    background-color: var(--surface-light);
+    color: var(--text-light);
     border: 1px solid var(--border-color);
     padding: 12px 25px;
     border-radius: 25px;
