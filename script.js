@@ -1,5 +1,5 @@
 // ==========================================================
-// script.js (v6.0 - The Grand Finale, with Ping)
+// script.js (v7.0 - The FAB-ulous Update)
 // ZHStore VPN Configurator
 // ==========================================================
 
@@ -7,19 +7,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- PENGATURAN ---
     const PROXY_LIST_URL = 'https://raw.githubusercontent.com/FoolVPN-ID/Nautica/main/proxyList.txt';
 
-    // --- Referensi Elemen DOM ---
+    // --- Referensi Elemen DOM (Diperbarui) ---
     const serverListContainer = document.getElementById('server-list');
     const countryFilter = document.getElementById('country-filter');
-    const searchInput = document.getElementById('search-input');
-    const selectedCountBtn = document.getElementById('selected-count-btn');
     const ispInfo = document.getElementById('isp-info');
     const locationInfo = document.getElementById('location-info');
     const workerInfoCard = document.getElementById('worker-info');
-    const settingsBtn = document.getElementById('settings-btn');
-    const exportBtn = document.getElementById('export-btn');
     const modalOverlay = document.getElementById('settings-modal-overlay');
     const settingsDoneBtn = document.getElementById('settings-done-btn');
 
+    // [BARU] Elemen untuk Search Container
+    const searchContainer = document.getElementById('search-container');
+    const searchInput = document.getElementById('search-input');
+    const closeSearchBtn = document.getElementById('close-search-btn');
+
+    // [BARU] Elemen untuk Floating Action Button (FAB)
+    const fabContainer = document.getElementById('fab-container');
+    const fabMainBtn = document.getElementById('fab-main-btn');
+    const searchBtn = document.getElementById('search-btn'); // Tombol search di FAB
+    const settingsBtn = document.getElementById('settings-btn'); // Tombol settings di FAB
+    const exportBtn = document.getElementById('export-btn'); // Tombol export di FAB
+    const selectedCountBadge = document.getElementById('selected-count-badge');
+
+    // Elemen Input di Modal (tetap sama)
     const bugCdnInput = document.getElementById('bug-cdn-input');
     const workerHostInput = document.getElementById('worker-host-input');
     const uuidInput = document.getElementById('uuid-input');
@@ -178,24 +188,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // =======================================================
-    // FUNGSI PING (VERSI 3.0 - THE DEFINITIVE WEBSOCKET PING)
+    // FUNGSI PING (v3.0 - THE DEFINITIVE WEBSOCKET PING)
     // =======================================================
-    
-    /**
-     * Mengukur latensi koneksi dengan mencoba membuka koneksi WebSocket.
-     * Metode ini lebih andal untuk koneksi lintas-asal (cross-origin).
-     * @param {string} ip - Alamat IP server.
-     * @param {string} port - Port server.
-     * @param {number} timeout - Waktu timeout dalam milidetik.
-     * @returns {Promise<number>} - Promise yang akan resolve dengan nilai ping atau -1 jika gagal.
-     */
     function pingServer(ip, port, timeout = 3000) {
         return new Promise((resolve) => {
             const startTime = Date.now();
             let ws;
             let resolved = false;
     
-            // Fungsi cleanup yang akan dipanggil di setiap hasil
             const cleanupAndResolve = (ping) => {
                 if (!resolved) {
                     resolved = true;
@@ -207,42 +207,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             };
             
-            // Timer untuk timeout
             const timer = setTimeout(() => {
                 cleanupAndResolve(-1);
             }, timeout);
     
             try {
-                // Kita coba koneksi WSS (WebSocket Secure). 
-                // Browser akan mengizinkan ini dari halaman HTTPS.
                 ws = new WebSocket(`wss://${ip}:${port}`);
     
-                // KASUS 1: Koneksi berhasil dibuat. Ini adalah hasil terbaik.
-                // Server merespons handshake WebSocket.
                 ws.onopen = () => {
                     const endTime = Date.now();
                     cleanupAndResolve(endTime - startTime);
                 };
     
-                // KASUS 2 (PALING UMUM): Koneksi gagal.
-                // Ini bisa karena port ditutup, tidak ada server WS, atau sertifikat tidak valid.
-                // TAPI, event 'onerror' ini sendiri sudah membuktikan bahwa servernya "menjawab".
-                // Kita tetap bisa mengukur waktunya!
                 ws.onerror = () => {
                     const endTime = Date.now();
-                    // Kita anggap latensi hingga error ini sebagai nilai ping.
                     cleanupAndResolve(endTime - startTime);
                 };
     
-                // KASUS 3: Server menutup koneksi secara langsung.
                 ws.onclose = () => {
-                    // Jika onopen atau onerror belum terpanggil, kita ukur waktunya di sini.
                     const endTime = Date.now();
                     cleanupAndResolve(endTime - startTime);
                 };
     
             } catch (error) {
-                // Gagal bahkan sebelum mencoba membuat WebSocket (misal, format URL salah)
                 cleanupAndResolve(-1);
             }
         });
@@ -258,8 +245,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const pingBadge = card.querySelector('.ping-badge');
             
             if (pingBadge) {
-                pingBadge.textContent = '...'; // Reset before pinging
-                pingBadge.style.backgroundColor = '';
+                pingBadge.textContent = '...';
+                pingBadge.style.backgroundColor = 'var(--border-color)'; // [DIUBAH] Warna default
 
                 const pingValue = await pingServer(ip, port);
                 
@@ -269,9 +256,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         pingBadge.style.backgroundColor = 'var(--danger-color)';
                     } else {
                         pingBadge.textContent = `${pingValue} ms`;
-                        if (pingValue < 300) pingBadge.style.backgroundColor = 'var(--primary-green)';
-                        else if (pingValue < 600) pingBadge.style.backgroundColor = '#fdd835';
-                        else pingBadge.style.backgroundColor = '#ff8a80';
+                        // [DIUBAH] Logika warna ping disesuaikan dengan tema baru
+                        if (pingValue < 300) pingBadge.style.backgroundColor = '#4caf50'; // Tetap hijau untuk ping bagus
+                        else if (pingValue < 600) pingBadge.style.backgroundColor = '#fdd835'; // Kuning
+                        else pingBadge.style.backgroundColor = '#ff8a80'; // Merah
                     }
                 });
             }
@@ -297,11 +285,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isShowingOnlySelected && selectedServers.size === 0) {
             isShowingOnlySelected = false;
             applyAllFilters();
+            selectedCountBadge.style.backgroundColor = '';
+            selectedCountBadge.style.color = '';
         }
     }
 
+    // [DIUBAH] Fungsi ini sekarang menargetkan badge di FAB
     function updateSelectedCount() {
-        selectedCountBtn.textContent = `${selectedServers.size} proxies`;
+        selectedCountBadge.textContent = selectedServers.size;
     }
 
     function applyAllFilters() {
@@ -372,25 +363,45 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeSettingsModal() { modalOverlay.classList.remove('visible'); }
 
     // =======================================================
-    // EVENT LISTENERS
+    // EVENT LISTENERS (Dirombak total untuk UI baru)
     // =======================================================
     
     countryFilter.addEventListener('change', applyAllFilters);
     searchInput.addEventListener('input', applyAllFilters);
 
-    selectedCountBtn.addEventListener('click', () => {
+    // [BARU] Listener untuk membuka/menutup menu FAB
+    fabMainBtn.addEventListener('click', () => {
+        fabContainer.classList.toggle('active');
+    });
+
+    // [BARU] Listener untuk tombol search di dalam FAB
+    searchBtn.addEventListener('click', () => {
+        searchContainer.classList.add('visible');
+        searchInput.focus(); // Langsung fokus ke input field
+        fabContainer.classList.remove('active'); // Tutup menu FAB setelah aksi
+    });
+
+    // [BARU] Listener untuk tombol tutup di search container
+    closeSearchBtn.addEventListener('click', () => {
+        searchContainer.classList.remove('visible');
+    });
+    
+    // [DIUBAH] Fungsionalitas "tampilkan yang dipilih" dipindah ke badge counter
+    selectedCountBadge.addEventListener('click', () => {
         if (selectedServers.size === 0) return;
         isShowingOnlySelected = !isShowingOnlySelected;
         applyAllFilters();
+
         if (isShowingOnlySelected) {
-            selectedCountBtn.style.backgroundColor = 'var(--primary-green)';
-            selectedCountBtn.style.color = 'var(--text-dark)';
+            selectedCountBadge.style.backgroundColor = '#4caf50'; // Warna aktif
+            selectedCountBadge.style.color = 'var(--text-dark)';
         } else {
-            selectedCountBtn.style.backgroundColor = '';
-            selectedCountBtn.style.color = '';
+            selectedCountBadge.style.backgroundColor = ''; // Kembali ke default
+            selectedCountBadge.style.color = '';
         }
     });
 
+    // Listener untuk tombol settings & export tetap sama karena ID tidak berubah
     settingsBtn.addEventListener('click', openSettingsModal);
     settingsDoneBtn.addEventListener('click', closeSettingsModal);
     modalOverlay.addEventListener('click', (event) => {
@@ -398,8 +409,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     exportBtn.addEventListener('click', exportProxies);
-    // Bonus: Re-ping saat tombol settings ditekan
-    settingsBtn.addEventListener('click', pingAllVisibleServers);
+    settingsBtn.addEventListener('click', pingAllVisibleServers); // Fitur bonus tetap dipertahankan
 
     // Jalankan aplikasi
     initializeApp();
