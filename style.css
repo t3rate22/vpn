@@ -31,7 +31,7 @@ body {
     max-width: 900px;
     margin: 0 auto;
     padding: 15px;
-    padding-bottom: 120px;
+    padding-bottom: 40px; /* Diubah dari 120px */
 }
 
 header {
@@ -212,100 +212,62 @@ header {
     background-color: #f0f0f0;
 }
 
-/* --- FAB (Floating Action Button) --- */
-.fab-container {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    z-index: 1500;
+/* --- ▼▼▼ KODE BARU (PENGGANTI FAB) ▼▼▼ --- */
+/* --- Bar Aksi Baru (Pengganti FAB) --- */
+.action-bar-container {
     display: flex;
-    flex-direction: column-reverse;
+    flex-wrap: wrap; /* Agar rapi di layar kecil */
+    gap: 10px;
     align-items: center;
+    margin: 20px 0; /* Jarak dari grid atas dan list bawah */
 }
-.fab-main-btn {
-    background-color: var(--surface-light);
-    color: var(--text-light);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 2px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    cursor: pointer;
+.action-bar-container .btn {
+    padding: 10px 15px;
+    flex-grow: 1; /* Tombol akan mengisi ruang */
+}
+.selected-info-badge {
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    font-size: 2em;
-    transition: transform 0.3s ease;
-    position: relative;
+    background-color: var(--surface-light);
+    border: 1px solid var(--border-color);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    color: #ccc;
+    flex-grow: 1; /* Mengisi ruang agar seimbang */
 }
-.fab-main-btn:hover {
-    background-color: var(--border-color);
-}
-.fab-main-icon {
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.fab-count-badge {
-    position: absolute;
-    top: -2px;
-    right: -5px;
+/* Style untuk badge hitungan */
+.count-badge {
     background-color: var(--primary-accent);
     color: var(--text-dark);
-    font-size: 0.5em;
+    font-size: 0.8em;
     font-weight: bold;
-    padding: 4px 7px;
+    padding: 4px 10px;
     border-radius: 12px;
     border: 1px solid var(--bg-dark);
-}
-.fab-options {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
-}
-.fab-container.active .fab-options {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-.fab-container.active .fab-main-btn .fab-main-icon {
-    transform: rotate(45deg);
-}
-.fab-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.fab-label {
-    background-color: var(--surface-light);
-    color: var(--text-light);
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-size: 0.9em;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-.fab-action-btn {
-    background-color: var(--surface-light);
-    color: var(--primary-accent);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    margin-left: 8px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5em;
     transition: background-color 0.2s ease;
 }
-.fab-action-btn:hover {
-    background-color: var(--border-color);
+.count-badge:hover {
+    background-color: #f0f0f0;
 }
+
+/* Aturan untuk layar lebih besar (desktop) */
+@media (min-width: 600px) {
+    .action-bar-container .btn {
+        flex-grow: 0; /* Tombol tidak perlu memanjang */
+    }
+    .selected-info-badge {
+        flex-grow: 0;
+        margin-left: auto; /* Dorong badge ke paling kanan */
+    }
+}
+/* --- ▲▲▲ BATAS KODE BARU ▲▲▲ --- */
+
+
+/* --- ▼▼▼ STYLE FAB SUDAH DIHAPUS DARI SINI ▼▼▼ --- */
 
 
 /* --- Gaya Modal Settings --- */
