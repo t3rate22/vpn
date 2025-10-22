@@ -50,6 +50,11 @@ header {
     text-decoration: none;
     color: var(--text-light);
 }
+.logo img { /* <-- BARU: Gaya untuk ikon logo naga */
+    width: 32px; 
+    height: 32px;
+    object-fit: contain;
+}
 .logo h1 {
     font-size: 1.5em;
     font-weight: 600;
@@ -69,6 +74,11 @@ header {
     display: flex;
     align-items: center;
     gap: 15px;
+}
+.info-card .info-icon { /* <-- BARU: Gaya untuk ikon di kartu info */
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
 .info-card.search-card {
     padding: 8px 15px;
