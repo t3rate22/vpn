@@ -18,8 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalOverlay = document.getElementById('settings-modal-overlay');
     const settingsDoneBtn = document.getElementById('settings-done-btn');
     const searchInput = document.getElementById('search-input');
-    const fabContainer = document.getElementById('fab-container');
-    const fabMainBtn = document.getElementById('fab-main-btn');
+    
+    // ▼▼▼ VARIABEL FAB DIHAPUS ▼▼▼
+    // const fabContainer = document.getElementById('fab-container');
+    // const fabMainBtn = document.getElementById('fab-main-btn');
+    
     const settingsBtn = document.getElementById('settings-btn');
     const exportBtn = document.getElementById('export-btn');
     const selectedCountBadge = document.getElementById('selected-count-badge');
@@ -419,9 +422,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     searchInput.addEventListener('input', applyAllFilters);
 
-    fabMainBtn.addEventListener('click', () => {
-        fabContainer.classList.toggle('active');
-    });
+    // ▼▼▼ EVENT LISTENER FAB DIHAPUS ▼▼▼
+    // fabMainBtn.addEventListener('click', () => {
+    //     fabContainer.classList.toggle('active');
+    // });
 
     selectedCountBadge.addEventListener('click', () => {
         if (selectedServers.size === 0) return;
