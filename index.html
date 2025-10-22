@@ -49,6 +49,15 @@
                 </div>
             </div>
 
+            <div class="action-bar-container">
+                <button class="btn" id="settings-btn">&#61894; Settings</button>
+                <button class="btn primary" id="export-btn">&#61891; Export</button>
+                
+                <div class="selected-info-badge">
+                    <span>Terpilih:</span>
+                    <span class="count-badge" id="selected-count-badge">0</span>
+                </div>
+            </div>
             <div class="server-list-container" id="server-list">
                 </div>
 
@@ -92,23 +101,6 @@
         </div>
     </div>
     
-    <div class="fab-container" id="fab-container">
-        <div class="fab-options">
-            <div class="fab-option">
-                <span class="fab-label">Export</span>
-                <button class="fab-action-btn" id="export-btn"></button>
-            </div>
-            <div class="fab-option">
-                <span class="fab-label">Settings</span>
-                <button class="fab-action-btn" id="settings-btn"></button>
-            </div>
-        </div>
-        <button class="fab-main-btn" id="fab-main-btn">
-            <span class="fab-main-icon">+</span>
-            <span class="fab-count-badge" id="selected-count-badge">0</span>
-        </button>
-    </div>
-
     <script>
         const jsVersion = new Date().getTime();
         document.write(`<script src="script.js?v=${jsVersion}" defer><\/script>`);
