@@ -51,8 +51,8 @@ header {
     color: var(--text-light);
 }
 .logo img { /* <-- BARU: Gaya untuk ikon logo naga */
-    width: 32px; 
-    height: 32px;
+    width: 36px; 
+    height: 36px;
     object-fit: contain;
 }
 .logo h1 {
